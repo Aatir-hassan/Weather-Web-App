@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Science+Gothic:wght@100..900&display=swap');
+*{
+  font-family: "Inter",sans-serif;
+}
+body{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(141, 141, 219);
+ background-image: url(./assets/bg-3.jpg);
+ background-position: center;
+ background-repeat: repeat;
+ background-size: cover;
+}
+.container{
+
+  width: 350px;
+  height: auto;
+  background:rgba(3, 30, 45, 0.8);
+  border-radius: 10px;
+  padding: 20px;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  animation: zoomIn 1.5s ease-in-out;
+  position: relative;
+}
+@keyframes zoomIn{
+  0%{
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100%{
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.input-container{
+  width: 100%;
+  display: flex;
+  border: none;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  
+ 
+}
+.input-box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cityInput{
+  flex: 1;
+  height: 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  padding: 10px;
+  border: 3px solid rgb(92, 243, 235);
+  margin: 10px;
+  padding: 10px;
+  outline: none;
+ 
+}
+.search-icon img{
+  width: 20px;
+  position: absolute;
+  right: 35px;
+  top:23px;
+  cursor: pointer;
+}
+ .icons{
+  width: 120px;
+  margin-top: 30px;
+  margin-left: 60%;
+  
+}
+.main-data{
+  margin-top: -120px;
+  padding: 10px 20px;
+}
+.temp{
+  font-size: 25px;
+  margin-bottom: 5px;
+}
+.location{
+  font-size: 25px;
+  color: rgb(234, 79, 13);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.country{
+  font-size: 15px;
+  color:#888;
+  margin: 5px 2px;
+  font-weight: 600;
+
+}
+.message{
+  background-color: rgb(102, 12, 12);
+  display: inline-block;
+  border-radius: 6px;
+  padding: 8px;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.cord{
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+.cord div span {
+  display: flex;
+  margin: 10px;
+  font-weight: 400;
+
+}
+.data-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 30px 25px 10px 25px;
+}
+.element .icon {
+  width: 30px;
+}
+.element{
+  text-align: center;
+}
+.humidity-percent, .wind-percent,.cord div span:nth-child(2){
+  color: rgb(116, 176, 20);
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  font-weight: 600;
+}
+.data .text{
+  font-size: 15px;
+  color: #888;
+  font-weight: 600;
+  margin-top: 5px;
+}
+.copyright {
+  margin-bottom: -12px;
+  font-size: 12px;
+  text-align: center;
+}
+.copyright span{
+  color: rgb(109, 106, 112);
+  font-weight: 500;
+}
+@media (min-width:768px){
+ .container{
+  width: 400px;
+
+ }
+ .icons{
+  width: 140px;
+ }
+    .main-data {
+      position: absolute;
+      top: 250px;
+      left: 5px;
+    }
+
+    .temp,
+    .location {
+      font-size: 30px;
+  
+    }
+    .cord {
+       margin-top: 60px;
+     }
+  
+    .input-container {
+      margin-top: 15px;
+    }
+  
+    .element .icon {
+      width: 40px;
+    }
+   .message {
+      font-size: 17px;
+    
+  }
+ 
+
+}
+@media (min-width:1024px){
+  .container{
+    width: 600px;
+  }
+    .icons {
+      width: 180px;
+      margin-left: 55%;
+     
+    }
+    .main-data {
+       position: absolute;
+       top: 250px;
+       left: 15px;
+   }
+    .cord{
+      margin-top: 60px;
+    } 
+    
+    .temp,.location{
+      font-size: 35px;
+     
+    }
+    .input-container{
+      margin-top: 15px;
+    }
+    .element .icon{
+      width: 50px;
+    }
+    .element{
+      margin-top: -40px;
+    }
+    .message{
+      font-size: 19px;
+     
+    }
+  }
