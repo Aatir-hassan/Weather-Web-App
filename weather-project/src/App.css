@@ -5,13 +5,14 @@
 body{
   margin: 0;
   padding: 0;
-  background-color: rgb(139, 139, 204);
+  background-color: rgb(163, 163, 212);
   background-image: url(./assets/bg-3.jpg);
   background-position: center;
-  background-repeat: repeat;
+  background-repeat:no-repeat;
   background-size: cover;
+  background-attachment: fixed;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,9 +28,8 @@ body{
   animation: zoomIn 1.5s ease-in-out;
   color: #fff;
   position: relative;
-  margin-top: 20px;
+  margin-top: 10px;
  
-
 }
 @keyframes zoomIn{
   0%{
@@ -154,7 +154,7 @@ body{
 }
 .copyright {
   margin-bottom: -12px;
-  font-size: 12px;
+  font-size: 10px;
   text-align: center;
 }
 .copyright span{
