@@ -163,7 +163,7 @@ setMessage(message);
 } catch(error){
 
   console.error("An error occured :", error.message);
-  setError("An error occurred while fetching weather data.");
+  setError(" An error occurred while fetching weather data.");
 
 } finally{
 

@@ -170,6 +170,7 @@ body{
 .loading-msg{
   text-align: center;
 }
+
 @media (min-width:768px){
  .container{
   width: 400px;
