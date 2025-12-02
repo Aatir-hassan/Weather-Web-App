@@ -2,10 +2,14 @@
 *{
   font-family: "Inter",sans-serif;
 }
-body{
+html,body{
   margin: 0;
   padding: 0;
-  background-color: rgb(163, 163, 212);
+  height: 100%;
+}
+body{
+  
+  background-color: rgb(15, 36, 49);
   background-image: url(./assets/bg-3.jpg);
   background-position: center;
   background-repeat:no-repeat;
@@ -15,7 +19,7 @@ body{
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 
 }
 .container{
@@ -116,7 +120,7 @@ body{
 .cord{
   display: flex;
   gap: 30px;
-  align-items: center;
+  align-items:center;
   justify-content: center;
   margin-top: 10px;
 }
@@ -170,14 +174,77 @@ body{
 .loading-msg{
   text-align: center;
 }
+.forecast-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 10px;
 
+}
+
+.fc-heading {
+  width: 100%;
+  text-align: center;
+  word-spacing: 3px;
+  letter-spacing: 0.6px;
+
+}
+
+.forecast-card {
+  border: #888 solid 1px;
+  border-radius: 10px;
+  width: 200px;
+  height: auto;
+  padding: 5px 20px;
+  text-align: center;
+  background: rgba(3, 30, 45, 0.35);
+  backdrop-filter: blur(10px);
+  transition: transform 0.5s ease;
+  transform-origin: center center;
+
+}
+
+.forecast-card:hover,
+.forecast-card:active {
+  transform: scale(1.1);
+  z-index: 10;
+  position: relative;
+}
+
+.forecast-card img {
+  width: 60px;
+  margin-top: -10px;
+
+
+}
+
+.forecast-card p {
+  font-size: 15px;
+  margin-top: -10px;
+}
+
+.forecast-container .forecast-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 10px;
+  border-radius: 10px;
+}
+
+  /*tab */
 @media (min-width:768px){
  .container{
-  width: 400px;
+  width: 600px;
 
  }
+ 
  .icons{
-  width: 140px;
+  width: 160px;
+ 
+ 
  }
     .main-data {
       position: absolute;
@@ -191,11 +258,14 @@ body{
   
     }
     .cord {
-       margin-top: 60px;
+       margin-top: 70px;
      }
   
     .input-container {
       margin-top: 15px;
+    }
+    .element{
+      margin-top: -150px;
     }
   
     .element .icon {
@@ -205,29 +275,37 @@ body{
       font-size: 17px;
     
   }
- 
-}
 
+
+  .fc-heading{
+    margin-top: -10px;
+  }
+
+}
+/*desktop */
 @media (min-width:1024px){
- 
+
   .container{
-    width: 600px;
+    width: 800px;
+    height: auto;
+    position: relative;
+  }
+  .input-box{
+    width: 70%;
+    margin-left: 20px;
   }
     .icons {
       width: 180px;
-      margin-left: 55%;
+      margin-left: 75%;
+      margin-top: 50px;
      
     }
     .main-data {
        position: absolute;
        top: 270px;
-       left:20px;
-      
-      
+       left:2%;
+    
    }
-    .cord{
-      margin-top: 60px;
-    } 
     
     .temp,.location{
       font-size: 35px;
@@ -239,11 +317,38 @@ body{
     .element .icon{
       width: 50px;
     }
-    .element{
-      margin-top: -40px;
-    }
+  
     .message{
       font-size: 19px;
      
     }
-  }
+  
+   .cord{
+    margin-top: -150px;
+    display: flex;
+    flex-direction: column;
+    margin-right: 150px;
+   }
+   .data-container{
+    display: flex;
+    flex-direction: column;
+    margin-left: 200px;
+    margin-top: -20px;
+    
+   }
+   .element{
+    display: flex;
+    gap: 20px;
+   }
+   .fc-heading{
+    margin-top: 60px;
+   }
+   .data{
+    margin-top: 10px;
+   }
+   }
+  
+
+  
+  
+   

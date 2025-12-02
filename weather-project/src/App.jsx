@@ -15,7 +15,7 @@ import hotIcon from "./assets/hot.png";
 import sunIcon from "./assets/sun.png";
 import bgIcon from "./assets/bg-1.jpg";
 
-const WeatherDetails = ({icon , temp, city, country, lat, long, humidity, wind, message}) => {
+const WeatherDetails = ({icon , temp, city, country, lat, long, humidity, wind, message, forecast}) => {
 
 return(
    <>
@@ -90,6 +90,7 @@ function App() {
         const [loading,setLoading] = useState (false);
         const [error,setError] = useState(null);
         const [message, setMessage] = useState("");
+        const[forecast, setForecast] = useState([]);
        
 
 const weatherIconMap = {
@@ -126,6 +127,7 @@ try{
     console.error("City not found");
     setCityNotFound(true);
     setLoading(false);
+    setForecast([]);
     return;
   }
    
@@ -140,6 +142,7 @@ try{
   setIcon(weatherIconMap[weatherIcon] || sunIcon);
   setCityNotFound(false);
 
+   fetchForecast(data.coord.lat, data.coord.lon);
    
   let message = "";
 
@@ -171,6 +174,26 @@ setMessage(message);
 }   
 };
 
+ // Fetch 5-day forecast
+  const fetchForecast = async (lat, long) => {
+    try {
+      const forecastURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${api_key}&units=metric`;
+
+      let res = await fetch(forecastURL);
+      let data = await res.json();
+
+       // Filter forecast → pick 1 reading per day (12:00 pm)
+      const dailyData = data.list.filter((item) =>
+        item.dt_txt.includes("12:00:00")
+      );
+
+      setForecast(dailyData);
+    } catch (err) {
+      console.log("Forecast error: ", err);
+    }
+
+    };
+
 const handleCity = (e) =>{
   setText(e.target.value);
 };
@@ -197,11 +220,32 @@ useEffect(function(){
        </div>
        
          {!loading && !cityNotFound && <WeatherDetails  icon={icon} temp={temp} city={city}  country={country} message={message} lat={lat} long={long}
-          humidity={humidity}  wind={wind} />}
+          humidity={humidity}  wind={wind}  forecast={forecast}/>}
 
        {loading && <div className='loading-msg'>Loading...</div>}
         {error && <div className='error-msg'>{error}</div>}
         {cityNotFound && <div className='city-not-found'>City not found</div>}
+
+        {forecast.length > 0 && ( <h5 className='fc-heading'>See Five Days Forecast</h5>)}
+
+          <div className='forecast-container'>
+          
+          {forecast.map((day, index) => (
+          <div key={index} className="forecast-card">
+            <h5>{new Date(day.dt_txt).toLocaleDateString()}</h5>
+
+            <img
+              src={`https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
+              alt="icon"
+            />
+
+            <p>{Math.floor(day.main.temp)}°C</p>
+            <p>{day.weather[0].description}</p>
+          </div>
+        ))}
+      
+     </div>
+      
        
           <p className='copyright'>Designed by <span>Jasmine</span></p>
        
