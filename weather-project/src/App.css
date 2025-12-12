@@ -20,6 +20,7 @@ body{
   display: flex;
   justify-content: center;
   align-items: flex-start;
+ 
 
 }
 .container{
@@ -100,6 +101,7 @@ body{
   font-weight: 600;
   text-transform: uppercase;
   margin-bottom: 5px;
+ 
 }
 .country{
   font-size: 15px;
@@ -233,6 +235,9 @@ body{
   padding: 6px 10px;
   border-radius: 10px;
 }
+.forecast-temp{
+ padding-top: 10px;
+}
 
   /*tab */
 @media (min-width:768px){
@@ -259,6 +264,7 @@ body{
     }
     .cord {
        margin-top: 70px;
+       gap: 50px;
      }
   
     .input-container {
@@ -308,7 +314,7 @@ body{
    }
     
     .temp,.location{
-      font-size: 35px;
+      font-size:30px;
      
     }
     .input-container{
@@ -324,7 +330,7 @@ body{
     }
   
    .cord{
-    margin-top: -150px;
+    margin-top: -160px;
     display: flex;
     flex-direction: column;
     margin-right: 150px;
@@ -333,12 +339,12 @@ body{
     display: flex;
     flex-direction: column;
     margin-left: 200px;
-    margin-top: -20px;
+    margin-top: -25px;
     
    }
    .element{
     display: flex;
-    gap: 20px;
+    gap: 10px;
    }
    .fc-heading{
     margin-top: 60px;
@@ -346,9 +352,8 @@ body{
    .data{
     margin-top: 10px;
    }
+   .forecast-temp{
+   padding-top: 20px;
    }
+  }
   
-
-  
-  
-   

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState} from 'react'
 import './App.css'
 import PropTypes from "prop-types";
 
@@ -20,26 +20,26 @@ const WeatherDetails = ({icon , temp, city, country, lat, long, humidity, wind, 
 return(
    <>
    <div>
-   <div className="image">
-     <img src={icon} alt="Image"  className='icons'/>
-   </div>
-   <div className='main-data'>
-     <div className='temp'>{temp}℃</div>
-     <div className='location'>{city}</div>
-     <div className='country'>{country}</div>
-     <p className='message'>{message}</p>
-   </div>
-    
-    <div className='cord'>
-     <div>
-      <span className='lat'>Latitude</span>
-      <span>{lat}</span>
-      </div>
-      <div>
-      <span className='long'>Longitude</span>
-      <span>{long}</span>
+     <div className="image">
+       <img src={icon} alt="Image"  className='icons'/>
      </div>
-    </div>
+     <div className='main-data'>
+       <div className='temp'>{temp}℃</div>
+       <div className='location'>{city}</div>
+       <div className='country'>{country}</div>
+       <p className='message'>{message}</p>
+     </div>
+    
+     <div className='cord'>
+       <div>
+         <span className='lat'>Latitude</span>
+         <span>{lat}</span>
+       </div>
+       <div>
+         <span className='long'>Longitude</span>
+         <span>{long}</span>
+       </div>
+     </div>
   
    <div className='data-container'>
      <div className='element'>
@@ -48,15 +48,15 @@ return(
          <div className='humidity-percent'>{humidity}%</div>
          <div className='text'>Humidity</div>
        </div>
-     </div>
+      </div>
      <div className='element'>
        <img src={windIcon} alt="Wind"  className="icon"/>
        <div className='data'>
          <div className='wind-percent'>{wind} km/h</div>
          <div className='text'>Wind Speed</div>
        </div>
-     </div>
-   </div>
+      </div>
+    </div>
    </div>
  </>
  );
@@ -91,6 +91,7 @@ function App() {
         const [error,setError] = useState(null);
         const [message, setMessage] = useState("");
         const[forecast, setForecast] = useState([]);
+
        
 
 const weatherIconMap = {
@@ -110,89 +111,97 @@ const weatherIconMap = {
   "13d" : snowIcon,
   "13n" : snowIcon,
 
-};      
+};  
 
+/*Open Meteo Api*/ 
 const search = async () => {
+  try {
+    setLoading(true);
+    setCityNotFound(false);
 
-  setLoading(true);
- let url =`https://api.openweathermap.org/data/2.5/weather?q=${text}&appid=${api_key}&units=metric`;
+    //  Get location from city name
+    const geoURL = `https://geocoding-api.open-meteo.com/v1/search?name=${text}`;
+    const geoRes = await fetch(geoURL);
+    const geoData = await geoRes.json();
 
-try{
-
-  let res = await fetch(url);
-  let data = await res.json();
-    //  console.log(data);
-
-  if(data.cod === "404") {
-    console.error("City not found");
-    setCityNotFound(true);
-    setLoading(false);
-    setForecast([]);
-    return;
-  }
-   
-  setHumidity(data.main.humidity);
-  setWind(data.wind.speed);
-  setTemp(Math.floor(data.main.temp));
-  setCity(data.name);
-  setCountry(data.sys.country);
-  setLat(data.coord.lat);
-  setLong(data.coord.lon);
-  const weatherIcon =data.weather[0].icon;
-  setIcon(weatherIconMap[weatherIcon] || sunIcon);
-  setCityNotFound(false);
-
-   fetchForecast(data.coord.lat, data.coord.lon);
-   
-  let message = "";
-
-if (weatherIcon === "09d" ||weatherIcon === "09n" || weatherIcon ==="10d" || weatherIcon === "10n"){
-  message = "Take an umbrella ☔";
-} else if (weatherIcon === "13d"  || weatherIcon === "13n" ) {
-  message = "It's snowing ❄️ Stay warm!";
-} else if (weatherIcon === "01d"|| weatherIcon === "01n" ) {
-  message = "It's sunny outside ☀️";
-} else if (weatherIcon === "02d" || weatherIcon === "02n" ) {
-  message = "It's cloudy today ☁️";
-} else if (weatherIcon === "03d" || weatherIcon === "03n" || weatherIcon === "04d" || weatherIcon === "04n" ) {
-  message = "Light drizzle outside ☔ ";
-} else {
-  message = "Have a great day!";
-}
-
-setMessage(message);
-
-
-} catch(error){
-
-  console.error("An error occured :", error.message);
-  setError(" An error occurred while fetching weather data.");
-
-} finally{
-
-  setLoading(false);
-}   
-};
-
- // Fetch 5-day forecast
-  const fetchForecast = async (lat, long) => {
-    try {
-      const forecastURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${api_key}&units=metric`;
-
-      let res = await fetch(forecastURL);
-      let data = await res.json();
-
-       // Filter forecast → pick 1 reading per day (12:00 pm)
-      const dailyData = data.list.filter((item) =>
-        item.dt_txt.includes("12:00:00")
-      );
-
-      setForecast(dailyData);
-    } catch (err) {
-      console.log("Forecast error: ", err);
+    if (!geoData.results || geoData.results.length === 0) {
+      setCityNotFound(true);
+      setLoading(false);
+      setForecast([]);
+      return;
     }
 
-    };
+    const location = geoData.results[0];
+
+    setCity(location.name);
+    setCountry(location.country);
+    setLat(location.latitude);
+    setLong(location.longitude);
+
+    //  Get Current Weather
+    const weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current_weather=true&hourly=relativehumidity_2m,wind_speed_10m`;
+
+    const weatherRes = await fetch(weatherURL);
+    const weatherData = await weatherRes.json();
+
+    const current = weatherData.current_weather;
+
+    setTemp(Math.floor(current.temperature));
+    setWind(current.windspeed);
+    setHumidity(weatherData.hourly.relativehumidity_2m[0]);
+
+    // Weather Message
+    if (current.weathercode === 51 || current.weathercode === 61) {
+      setMessage("Take an umbrella ☔");
+    } else if (current.weathercode === 71) {
+      setMessage("It's snowing ❄️ Stay warm!");
+    } else if (current.weathercode === 0) {
+      setMessage("It's sunny outside ☀️");
+    } else if (current.weathercode === 2) {
+      setMessage("It's cloudy today ☁️");
+    } else {
+      setMessage("Have a great day!");
+    }
+
+    // set icons
+    if (current.weathercode === 0) setIcon(sunIcon);
+    else if (current.weathercode === 2) setIcon(cloudIcon);
+    else if (current.weathercode === 61) setIcon(rainIcon);
+    else if (current.weathercode === 71) setIcon(snowIcon);
+    else setIcon(cloudIcon);
+
+  
+    fetchForecast(location.latitude, location.longitude);
+
+  } catch (error) {
+    console.log(error);
+    setError("Error fetching weather");
+  } finally {
+    setLoading(false);
+  }
+};
+
+  // Fetch Forecast
+    const fetchForecast = async (lat, long) => {
+  try {
+    const forecastURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`;
+
+    const res = await fetch(forecastURL);
+    const data = await res.json();
+
+    const final = data.daily.time.map((date, i) => ({
+      date,
+      temp: Math.floor(data.daily.temperature_2m_max[i]),
+      code: data.daily.weathercode[i],
+    }));
+
+    // Only 5 days
+    setForecast(final.slice(0, 5));
+  } catch (err) {
+    console.log("Forecast error:", err);
+  }
+};
+
 
 const handleCity = (e) =>{
   setText(e.target.value);
@@ -207,16 +216,19 @@ useEffect(function(){
   search();
 },[]);
 
+
   return (
     <>
       <div className='container'>
        <div className='input-box'>
        <div className='input-container'>
         <input type='text' className='cityInput' placeholder='Search City'onChange={handleCity} value={text} onKeyDown={handleKeyDown}/>
-        <div className='search-icon' onClick={search}>
+        <div className='search-icon'  onClick={search}>
           <img src={searchIcon} alt="search" className="bg-img" />
         </div>
        </div>
+
+       
        </div>
        
          {!loading && !cityNotFound && <WeatherDetails  icon={icon} temp={temp} city={city}  country={country} message={message} lat={lat} long={long}
@@ -228,28 +240,32 @@ useEffect(function(){
 
         {forecast.length > 0 && ( <h5 className='fc-heading'>See Five Days Forecast</h5>)}
 
-          <div className='forecast-container'>
+        <div className='forecast-container'>
           
           {forecast.map((day, index) => (
           <div key={index} className="forecast-card">
-            <h5>{new Date(day.dt_txt).toLocaleDateString()}</h5>
+           
+            <h5>{new Date(day.date).toLocaleDateString()}</h5>
 
-            <img
-              src={`https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
-              alt="icon"
-            />
+            <img src={
+               day.code === 0 ? sunIcon :
+               day.code === 2 ? cloudIcon :
+               day.code === 61 ? rainIcon :
+               day.code === 71 ? snowIcon :
+              cloudIcon
+             }/>
 
-            <p>{Math.floor(day.main.temp)}°C</p>
-            <p>{day.weather[0].description}</p>
-          </div>
+           <p className='forecast-temp'>{day.temp}°C</p>
+          
+         </div>
         ))}
       
      </div>
-      
        
           <p className='copyright'>Designed by <span>Jasmine</span></p>
        
-      </div>
+    </div>
+    
     </>
   );
 };
